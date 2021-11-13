@@ -2,10 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/AuthUI/LoginUI.dart';
 import 'package:food_app/Authentication/EmailAuth/google_login_auth/googleAuth.dart';
-import 'package:food_app/Model/news_model.dart';
 import 'package:food_app/apicall/apiCall.dart';
 import 'package:food_app/loggedinscreen.dart';
-import 'package:provider/provider.dart';
 
 // class MyHomePage extends StatefulWidget {
 //   const MyHomePage({Key key}) : super(key: key);
@@ -37,29 +35,33 @@ import 'package:provider/provider.dart';
 // }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            final provider =
-                Provider.of<GoogleSignInProvider>(context, listen: false);
-            if (provider.isSigningIn) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasData) {
-              return LoggedInScreen();
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('Something went wrong'),
-              );
-            } else {
-              return LoginScreen();
-            }
-          }),
-    );
+        body: Container(
+      color: Colors.red,
+    )
+
+        // StreamBuilder(
+        //     stream: FirebaseAuth.instance.authStateChanges(),
+        //     builder: (context, snapshot) {
+        //       final provider =
+        //           Provider.of<GoogleSignInProvider>(context, listen: false);
+        //       if (provider.isSigningIn) {
+        //         return Center(child: CircularProgressIndicator());
+        //       } else if (snapshot.hasData) {
+        //         return LoggedInScreen();
+        //       } else if (snapshot.hasError) {
+        //         return Center(
+        //           child: Text('Something went wrong'),
+        //         );
+        //       } else {
+        //         return LoginScreen();
+        //       }
+        //     }),
+        );
   }
 }
 

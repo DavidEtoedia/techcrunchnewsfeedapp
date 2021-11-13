@@ -1,68 +1,72 @@
-import 'package:flutter/cupertino.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:flutter/cupertino.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
 
-class GoogleSignInProvider extends ChangeNotifier {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  User _user;
+// class GoogleSignInProvider extends ChangeNotifier {
+//   FirebaseAuth auth = FirebaseAuth.instance;
+//   User _user;
 
-  final googleSignIn = GoogleSignIn();
+//   final googleSignIn = GoogleSignIn();
 
-  bool _isSigningIn;
+//   bool _isSigningIn;
 
-  GoogleSignInProvider() {
-    _isSigningIn = false;
-  }
+//   GoogleSignInProvider(
+//     this.auth,
+//     this._user,
+//     this._isSigningIn,
+//   ) {
+//     _isSigningIn = false;
+//   }
 
-  User get user => _user;
+//   User get user => _user;
 
-  bool get isSigningIn => _isSigningIn;
+//   bool get isSigningIn => _isSigningIn;
 
-  set isSigningIn(bool isSigningIn) {
-    _isSigningIn = isSigningIn;
-    notifyListeners();
-  }
+//   set isSigningIn(bool isSigningIn) {
+//     _isSigningIn = isSigningIn;
+//     notifyListeners();
+//   }
 
-  // GoogleSignInAccount _user;
+//   // GoogleSignInAccount _user;
 
-  // GoogleSignInAccount get user => _user;
+//   // GoogleSignInAccount get user => _user;
 
-  Future login() async {
-    try {
-      isSigningIn = true;
-      final googleUser = await googleSignIn.signIn();
+//   Future login() async {
+//     try {
+//       isSigningIn = true;
+//       final googleUser = await googleSignIn.signIn();
 
-      if (googleUser == null) {
-        _isSigningIn = false;
-      } else {
-        final googleAuth = await googleUser.authentication;
-        final credential = GoogleAuthProvider.credential(
-            accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+//       if (googleUser == null) {
+//         _isSigningIn = false;
+//       } else {
+//         final googleAuth = await googleUser.authentication;
+//         final credential = GoogleAuthProvider.credential(
+//             accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
 
-        await FirebaseAuth.instance.signInWithCredential(credential);
+//         await FirebaseAuth.instance.signInWithCredential(credential);
 
-        isSigningIn = false;
-      }
-    } catch (err) {
-      print(err.toString());
-    }
+//         isSigningIn = false;
+//       }
+//     } catch (err) {
+//       print(err.toString());
+//     }
 
-    notifyListeners();
-  }
+//     notifyListeners();
+//   }
 
-  Future logout() async {
-    User user = auth.currentUser;
+//   Future logout() async {
+//     User? user = auth.currentUser;
 
-    await auth.signOut();
-    print('$user.uid is signed out');
+//     await auth.signOut();
+//     print('$user.uid is signed out');
 
-    if (await googleSignIn.isSignedIn()) {
-      await googleSignIn.disconnect();
-      print('logged out with google');
-    }
+//     if (await googleSignIn.isSignedIn()) {
+//       await googleSignIn.disconnect();
+//       print('logged out with google');
+//     }
 
-    notifyListeners();
-  }
-}
+//     notifyListeners();
+//   }
+// }
 
-// class EmailSignInProvider extends ChangeNotifier{}
+// // class EmailSignInProvider extends ChangeNotifier{}
