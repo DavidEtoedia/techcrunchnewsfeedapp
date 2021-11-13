@@ -1,141 +1,189 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:food_app/AuthUI/LoginUI.dart';
-import 'package:food_app/Util/failure.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:flutter/cupertino.dart';
 
-// enum FormType { signin, signup }
+// import 'package:food_app/AuthUI/LoginUI.dart';
+// import 'package:food_app/Util/failure.dart';
 
-class EmailSignInProvider extends ChangeNotifier {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  User _user;
-  AutovalidateMode _autovalidateMode;
-  // final _formKey = GlobalKey<FormState>();
+// // enum FormType { signin, signup }
 
-  bool _isLogin;
-  String _userEmail;
-  String _userPassword;
-  bool _isLoading;
-  bool _isFailed;
-  String _errorText;
-  bool _errText;
-  // FormType formType;
+// class EmailSignInProvider extends ChangeNotifier {
+//   FirebaseAuth auth = FirebaseAuth.instance;
+//   User _user;
+//   AutovalidateMode _autovalidateMode;
+//   // final _formKey = GlobalKey<FormState>();
 
-  EmailSignInProvider() {
-    _isLoading = false;
-    _isLogin = true;
-    _userEmail = '';
-    _userPassword = '';
-    _isFailed = true;
-    _errorText = 'Enter a Valid';
-    _errText = false;
-    // formType = FormType.signin;
-  }
+//   bool _isLogin;
+//   String _userEmail;
+//   String _userPassword;
+//   bool _isLoading;
+//   bool _isFailed;
+//   String _errorText;
+//   bool _errText;
+//   // FormType formType;
 
-  //getters
+//   EmailSignInProvider(
+//     this.auth,
+//     this._user,
+//     this._autovalidateMode,
+//     this._isLogin,
+//     this._userEmail,
+//     this._userPassword,
+//     this._isLoading,
+//     this._isFailed,
+//     this._errorText,
+//     this._errText,
+//   ) {
+//     _isLoading = false;
+//     _isLogin = true;
+//     _userEmail = '';
+//     _userPassword = '';
+//     _isFailed = true;
+//     _errorText = 'Enter a Valid';
+//     _errText = false;
+//     // formType = FormType.signin;
+//   }
 
-  bool get isFailed => _isFailed;
+//   //getters
 
-  bool get errText => _errText;
+//   bool get isFailed => _isFailed;
 
-  String get errorText => _errorText;
+//   bool get errText => _errText;
 
-  User get user => _user;
+//   String get errorText => _errorText;
 
-  bool get isLoading => _isLoading;
+//   User get user => _user;
 
-  bool get isLogin => _isLogin;
+//   bool get isLoading => _isLoading;
 
-  String get userEmail => _userEmail;
+//   bool get isLogin => _isLogin;
 
-  String get userPassword => _userPassword;
+//   String get userEmail => _userEmail;
 
-  AutovalidateMode get autovalidateMode => _autovalidateMode;
+//   String get userPassword => _userPassword;
 
-  //setters
+//   AutovalidateMode get autovalidateMode => _autovalidateMode;
 
-  set isFailed(bool value) {
-    _isFailed = value;
-    notifyListeners();
-  }
+//   //setters
 
-  set isLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
-  }
+//   set isFailed(bool value) {
+//     _isFailed = value;
+//     notifyListeners();
+//   }
 
-  set isLogin(bool value) {
-    _isLogin = value;
-    notifyListeners();
-  }
+//   set isLoading(bool value) {
+//     _isLoading = value;
+//     notifyListeners();
+//   }
 
-  set userEmail(String value) {
-    if (value != null && !value.contains('@')) {
-      _userEmail = ('Invalid enail address');
-    } else {
-      _userEmail = value;
-    }
+//   set isLogin(bool value) {
+//     _isLogin = value;
+//     notifyListeners();
+//   }
 
-    _userEmail = value;
-    notifyListeners();
-  }
+//   set userEmail(String value) {
+//     if (value != null && !value.contains('@')) {
+//       _userEmail = ('Invalid enail address');
+//     } else {
+//       _userEmail = value;
+//     }
 
-  set userPassword(String value) {
-    if (value.length > 7) {
-      _userPassword = (value);
-    } else {
-      _userPassword = ('Password must contain more than 7 characters');
-    }
+//     _userEmail = value;
+//     notifyListeners();
+//   }
 
-    // _userPassword = value;
+//   set userPassword(String value) {
+//     if (value.length > 7) {
+//       _userPassword = (value);
+//     } else {
+//       _userPassword = ('Password must contain more than 7 characters');
+//     }
 
-    notifyListeners();
-  }
+//     // _userPassword = value;
 
-  Future<bool> login() async {
-    try {
-      isLoading = true;
+//     notifyListeners();
+//   }
 
-      if (isLogin) {
-        await auth.signInWithEmailAndPassword(
-            email: userEmail, password: userPassword);
-        User user = auth.currentUser;
-        print(user.uid);
-      } else {
-        await auth.createUserWithEmailAndPassword(
-            email: userEmail, password: userPassword);
-      }
+//   Future<bool> login() async {
+//     try {
+//       isLoading = true;
 
-      isLoading = false;
+//       if (isLogin) {
+//         await auth.signInWithEmailAndPassword(
+//             email: userEmail, password: userPassword);
+//         User? user = auth.currentUser;
+//         print(user!.uid);
+//       } else {
+//         await auth.createUserWithEmailAndPassword(
+//             email: userEmail, password: userPassword);
+//       }
 
-      return true;
-    } catch (err) {
-      switch (err) {
-        case 'Email already Exist':
-          Failure(message: 'Email already exist');
-          break;
-      }
-      print(err);
-      isLoading = false;
-      return false;
-    }
-  }
+//       isLoading = false;
 
-  void errorValidation() {
-    // isFailed = true;
-    if (isFailed) {
-      _autovalidateMode = AutovalidateMode.always;
+//       return true;
+//     } catch (err) {
+//       switch (err) {
+//         case 'Email already Exist':
+//           Failure(message: 'Email already exist');
+//           break;
+//       }
+//       print(err);
+//       isLoading = false;
+//       return false;
+//     }
+//   }
 
-      // _errText = false;
-    } else {
-      _autovalidateMode = AutovalidateMode.disabled;
-      // _formKey.currentState.reset();
-    }
+//   void errorValidation() {
+//     // isFailed = true;
+//     if (isFailed) {
+//       _autovalidateMode = AutovalidateMode.always;
 
-    isFailed = false;
-  }
-}
+//       // _errText = false;
+//     } else {
+//       _autovalidateMode = AutovalidateMode.disabled;
+//       // _formKey.currentState.reset();
+//     }
 
-// void moveToSignUp() {
-//   formType = FormType.signup;
-//   notifyListeners();
+//     isFailed = false;
+//   }
+
+//   @override
+//   bool operator ==(Object other) {
+//     if (identical(this, other)) return true;
+
+//     return other is EmailSignInProvider &&
+//         other.auth == auth &&
+//         other._user == _user &&
+//         other._autovalidateMode == _autovalidateMode &&
+//         other._isLogin == _isLogin &&
+//         other._userEmail == _userEmail &&
+//         other._userPassword == _userPassword &&
+//         other._isLoading == _isLoading &&
+//         other._isFailed == _isFailed &&
+//         other._errorText == _errorText &&
+//         other._errText == _errText;
+//   }
+
+//   @override
+//   int get hashCode {
+//     return auth.hashCode ^
+//         _user.hashCode ^
+//         _autovalidateMode.hashCode ^
+//         _isLogin.hashCode ^
+//         _userEmail.hashCode ^
+//         _userPassword.hashCode ^
+//         _isLoading.hashCode ^
+//         _isFailed.hashCode ^
+//         _errorText.hashCode ^
+//         _errText.hashCode;
+//   }
+
+//   @override
+//   String toString() {
+//     return 'EmailSignInProvider(auth: $auth, _user: $_user, _autovalidateMode: $_autovalidateMode, _isLogin: $_isLogin, _userEmail: $_userEmail, _userPassword: $_userPassword, _isLoading: $_isLoading, _isFailed: $_isFailed, _errorText: $_errorText, _errText: $_errText)';
+//   }
 // }
+
+// // void moveToSignUp() {
+// //   formType = FormType.signup;
+// //   notifyListeners();
+// // }
