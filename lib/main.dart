@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_app/Authentication/EmailAuth/emailAuth.dart';
 import 'package:food_app/homepage.dart';
-import 'package:food_app/ui/news_display_screen.dart';
+import 'package:food_app/ui/screens/Home_screen.dart';
+import 'package:food_app/ui/widgets/news_display_screen.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'Authentication/EmailAuth/google_login_auth/googleAuth.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 primarySwatch: Colors.blue,
               ),
-              home: NewsScreen(),
+              home: HomeScreen(),
               debugShowCheckedModeBanner: false,
             ));
   }

@@ -11,100 +11,117 @@ String newArticleToJson(NewArticle data) => json.encode(data.toJson());
 
 class NewArticle {
   NewArticle({
-    this.status,
-    this.totalResults,
-    this.articles,
+    // this.pagination,
+    required this.data,
   });
 
-  String? status;
-  int? totalResults;
-  List<Article>? articles;
+  // Pagination pagination;
+  List<Datum> data;
 
   factory NewArticle.fromJson(Map<String, dynamic> json) => NewArticle(
-        status: json["status"],
-        totalResults: json["totalResults"],
-        articles: List<Article>.from(
-            json["articles"].map((x) => Article.fromJson(x))),
+        // pagination: Pagination.fromJson(json["pagination"]),
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "status": status,
-        "totalResults": totalResults,
-        "articles": List<dynamic>.from(articles!.map((x) => x.toJson())),
+        // "pagination": pagination.toJson(),
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
       };
 }
 
-class Article {
-  Article({
-    this.source,
-    this.author,
-    this.title,
-    this.description,
-    this.url,
-    this.urlToImage,
-    this.publishedAt,
-    this.content,
+class Datum {
+  Datum({
+    required this.title,
+    required this.description,
+    required this.url,
+    required this.source,
+    required this.image,
+    this.category,
+    // this.language,
+    // this.country,
+    required this.publishedAt,
   });
 
-  Source? source;
-  String? author;
-  String? title;
-  String? description;
-  String? url;
-  String? urlToImage;
-  DateTime? publishedAt;
-  String? content;
+  String title;
+  String description;
+  String url;
+  String source;
+  String image;
+  Category? category;
+  // Language language;
+  // Country country;
+  DateTime publishedAt;
 
-  factory Article.fromJson(Map<String, dynamic> json) => Article(
-        source: Source.fromJson(json["source"]),
-        author: json["author"],
+  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         title: json["title"],
         description: json["description"],
         url: json["url"],
-        urlToImage: json["urlToImage"],
-        publishedAt: DateTime.parse(json["publishedAt"]),
-        content: json["content"],
+        source: json["source"],
+        image: json["image"] == null ? '' : json["image"],
+        category: categoryValues.map[json["category"]],
+        // language: languageValues.map[json["language"]],
+        // country: countryValues.map[json["country"]],
+        publishedAt: DateTime.parse(json["published_at"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "source": source!.toJson(),
-        "author": author,
         "title": title,
         "description": description,
         "url": url,
-        "urlToImage": urlToImage,
-        "publishedAt": publishedAt!.toIso8601String(),
-        "content": content,
+        "source": source,
+        "image": image == null ? '' : image,
+        "category": categoryValues.reverse[category],
+        // "language": languageValues.reverse[language],
+        // "country": countryValues.reverse[country],
+        "published_at": publishedAt.toIso8601String(),
       };
 }
 
-class Source {
-  Source({
-    this.id,
-    this.name,
-  });
+enum Category { GENERAL, TECHNOLOGY }
 
-  Id? id;
-  Name? name;
+final categoryValues = EnumValues(
+    {"general": Category.GENERAL, "technology": Category.TECHNOLOGY});
 
-  factory Source.fromJson(Map<String, dynamic> json) => Source(
-        id: idValues.map[json["id"]],
-        name: nameValues.map[json["name"]],
-      );
+// enum Country { US, GB }
 
-  Map<String, dynamic> toJson() => {
-        "id": idValues.reverse[id],
-        "name": nameValues.reverse[name],
-      };
-}
+// final countryValues = EnumValues({
+//     "gb": Country.GB,
+//     "us": Country.US
+// });
 
-enum Id { TECHCRUNCH }
+// enum Language { EN }
 
-final idValues = EnumValues({"techcrunch": Id.TECHCRUNCH});
+// final languageValues = EnumValues({
+//     "en": Language.EN
+// });
 
-enum Name { TECH_CRUNCH }
+// class Pagination {
+//     Pagination({
+//         this.limit,
+//         this.offset,
+//         this.count,
+//         this.total,
+//     });
 
-final nameValues = EnumValues({"TechCrunch": Name.TECH_CRUNCH});
+//     int limit;
+//     int offset;
+//     int count;
+//     int total;
+
+//     factory Pagination.fromJson(Map<String, dynamic> json) => Pagination(
+//         limit: json["limit"],
+//         offset: json["offset"],
+//         count: json["count"],
+//         total: json["total"],
+//     );
+
+//     Map<String, dynamic> toJson() => {
+//         "limit": limit,
+//         "offset": offset,
+//         "count": count,
+//         "total": total,
+//     };
+// }
 
 class EnumValues<T> {
   late Map<String, T> map;
