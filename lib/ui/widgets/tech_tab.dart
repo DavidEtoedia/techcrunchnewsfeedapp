@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_app/core/services/api/Model/news_model.dart';
+import 'package:food_app/core/services/api/Model/news_category.dart';
 import 'package:food_app/ui/vm/tech_category.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class TechTab extends HookConsumerWidget {
   const TechTab({Key? key}) : super(key: key);
@@ -33,9 +35,11 @@ class TechTab extends HookConsumerWidget {
             return ref.refresh(techProvider);
           },
           child: ListView.builder(
-              itemCount: value!.data.length,
+              physics: AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics()),
+              itemCount: value!.articles!.length,
               itemBuilder: (context, index) {
-                final tech = value.data[index];
+                final tech = value.articles![index];
                 return TechTabBuild(article: tech);
               }),
         );
@@ -45,7 +49,7 @@ class TechTab extends HookConsumerWidget {
 }
 
 class TechTabBuild extends HookConsumerWidget {
-  final Datum article;
+  final NewsCategory article;
   const TechTabBuild({Key? key, required this.article}) : super(key: key);
 
   @override
@@ -55,10 +59,12 @@ class TechTabBuild extends HookConsumerWidget {
     final vergeImage = useState('assets/images/Verge.png');
     final thnImage = useState('assets/images/THN.jpeg');
     final engadgetImage = useState('assets/images/engadget.png');
+    DateTime pubDate = article.publishedAt!;
+    String formatted = DateFormat('h').format(pubDate);
     String sourceDisplay() {
       // var timeNow = DateTime.now().hour;
 
-      if (article.source == "TechCrunch") {
+      if (article.source!.name == "TechCrunch") {
         return image.value;
       }
       if (article.source == 'The Verge') {
@@ -76,6 +82,9 @@ class TechTabBuild extends HookConsumerWidget {
         return vergeImage.value;
       }
     }
+
+    final newText = article.title;
+    final maxline = 5;
 
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 10),
@@ -102,40 +111,64 @@ class TechTabBuild extends HookConsumerWidget {
                           height: 20,
                         ),
                     placeholder: (context, url) => CircularProgressIndicator(),
-                    imageUrl: article.image),
+                    imageUrl: article.urlToImage.toString()),
               ),
               Gap(20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 170,
-                    margin: EdgeInsets.only(
-                      top: 25.h,
-                    ),
-                    child: Text(
-                      article.title,
-                      style: TextStyle(
-                          fontSize: 15.sp, fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                  Gap(10),
-                  Row(
-                    children: [
-                      Image.asset(
-                        sourceDisplay(),
-                        width: 20,
-                        height: 20,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 170,
+                      margin: EdgeInsets.only(
+                        top: 25.h,
                       ),
-                      Gap(6),
-                      Text(
-                        article.source,
-                        style: TextStyle(
-                            fontSize: 15.sp, fontWeight: FontWeight.w400),
+                      child: newText!.length > maxline
+                          ? Text(
+                              article.title.toString(),
+                              maxLines: 4,
+                              style: TextStyle(
+                                  fontSize: 15.sp, fontWeight: FontWeight.w400),
+                            )
+                          : Text(
+                              article.title.toString(),
+                              maxLines: 4,
+                              style: TextStyle(
+                                  fontSize: 15.sp, fontWeight: FontWeight.w400),
+                            ),
+                    ),
+                    Gap(10),
+                    Container(
+                      margin: EdgeInsets.only(right: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Image.asset(
+                            sourceDisplay(),
+                            width: 15,
+                            height: 15,
+                          ),
+                          Gap(10),
+                          Container(
+                            width: 100,
+                            child: Text(
+                              article.source!.name.toString(),
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 13.sp, fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                          Spacer(),
+                          Text(
+                            '${formatted} hour ago',
+                            style: TextStyle(
+                                fontSize: 13.sp, fontWeight: FontWeight.w400),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ],
+                    )
+                  ],
+                ),
               ),
             ],
           ),

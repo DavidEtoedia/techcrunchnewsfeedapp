@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:food_app/core/services/api/Model/live_feed.dart';
 import 'package:food_app/core/services/api/Model/news_model.dart';
+import 'package:food_app/core/services/api/Model/news_category.dart';
 import 'package:food_app/core/services/api/api_inceptor.dart';
 import 'package:food_app/core/services/api/error_interceptor.dart';
 import 'package:food_app/core/services/global/constant.dart';
@@ -12,7 +14,9 @@ final newsServiceProvider = Provider<NewsService>((ref) {
 });
 
 final dioProvider = Provider((ref) => Dio(BaseOptions(
-    receiveTimeout: 100000, connectTimeout: 100000, baseUrl: Constant.apiUrl)));
+    receiveTimeout: 100000,
+    connectTimeout: 100000,
+    baseUrl: Constant.baseUrl)));
 
 class NewsService {
   final Dio dio;
@@ -22,14 +26,14 @@ class NewsService {
     dio.interceptors.add(PrettyDioLogger());
   }
 
-  Future<NewArticle> getNews() async {
+  Future<GeneralCategory> getNews() async {
     final url =
-        'news?access_key=59c279f8f930e95543e11924d03039a6&%20sources=cnn,bbc,techcrunch';
+        'top-headlines?country=us&category=general&apiKey=4afd7897032e43419f559a8308a7d094';
     try {
       final response = await dio.get(
         url,
       );
-      final result = NewArticle.fromJson(response.data);
+      final result = GeneralCategory.fromJson(response.data);
       return result;
     } on DioError catch (e) {
       if (e.response != null && e.response!.data != '') {
@@ -41,14 +45,33 @@ class NewsService {
     }
   }
 
-  Future<NewArticle> techCategory() async {
+  // Future<NewArticle> techCategory() async {
+  //   final url =
+  //       'news?access_key=59c279f8f930e95543e11924d03039a6&categories=technology&languages=en';
+  //   try {
+  //     final response = await dio.get(
+  //       url,
+  //     );
+  //     final result = NewArticle.fromJson(response.data);
+  //     return result;
+  //   } on DioError catch (e) {
+  //     if (e.response != null && e.response!.data != '') {
+  //       Failure result = Failure.fromJson(e.response!.data);
+  //       throw result.error!.message!;
+  //     } else {
+  //       throw e.error;
+  //     }
+  //   }
+  // }
+
+  Future<Category> sportCategory() async {
     final url =
-        'news?access_key=59c279f8f930e95543e11924d03039a6&categories=technology&languages=en';
+        'top-headlines?country=us&category=sports&apiKey=4afd7897032e43419f559a8308a7d094';
     try {
       final response = await dio.get(
         url,
       );
-      final result = NewArticle.fromJson(response.data);
+      final result = Category.fromJson(response.data);
       return result;
     } on DioError catch (e) {
       if (e.response != null && e.response!.data != '') {
@@ -60,14 +83,14 @@ class NewsService {
     }
   }
 
-  Future<NewArticle> sportCategory() async {
+  Future<Category> techCategory() async {
     final url =
-        'news?access_key=59c279f8f930e95543e11924d03039a6&categories=sports&languages=en';
+        'top-headlines?country=us&category=technology&apiKey=4afd7897032e43419f559a8308a7d094';
     try {
       final response = await dio.get(
         url,
       );
-      final result = NewArticle.fromJson(response.data);
+      final result = Category.fromJson(response.data);
       return result;
     } on DioError catch (e) {
       if (e.response != null && e.response!.data != '') {
@@ -79,14 +102,33 @@ class NewsService {
     }
   }
 
-  Future<NewArticle> healthCategory() async {
+  Future<Category> businessCategory() async {
     final url =
-        'news?access_key=59c279f8f930e95543e11924d03039a6&categories=health&languages=en';
+        'top-headlines?country=us&category=business&apiKey=4afd7897032e43419f559a8308a7d094';
     try {
       final response = await dio.get(
         url,
       );
-      final result = NewArticle.fromJson(response.data);
+      final result = Category.fromJson(response.data);
+      return result;
+    } on DioError catch (e) {
+      if (e.response != null && e.response!.data != '') {
+        Failure result = Failure.fromJson(e.response!.data);
+        throw result.error!.message!;
+      } else {
+        throw e.error;
+      }
+    }
+  }
+
+  Future<LiveFeed> newsFeed() async {
+    final url =
+        'top-headlines?sources=bbc-news,techcrunch,techradar&apiKey=4afd7897032e43419f559a8308a7d094';
+    try {
+      final response = await dio.get(
+        url,
+      );
+      final result = LiveFeed.fromJson(response.data);
       return result;
     } on DioError catch (e) {
       if (e.response != null && e.response!.data != '') {

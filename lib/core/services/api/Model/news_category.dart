@@ -1,17 +1,15 @@
 // To parse this JSON data, do
 //
-//     final generalCategory = generalCategoryFromJson(jsonString);
+//     final category = categoryFromJson(jsonString);
 
 import 'dart:convert';
 
-GeneralCategory generalCategoryFromJson(String str) =>
-    GeneralCategory.fromJson(json.decode(str));
+Category categoryFromJson(String str) => Category.fromJson(json.decode(str));
 
-String generalCategoryToJson(GeneralCategory data) =>
-    json.encode(data.toJson());
+String categoryToJson(Category data) => json.encode(data.toJson());
 
-class GeneralCategory {
-  GeneralCategory({
+class Category {
+  Category({
     this.status,
     this.totalResults,
     this.articles,
@@ -19,14 +17,13 @@ class GeneralCategory {
 
   String? status;
   int? totalResults;
-  List<Article>? articles;
+  List<NewsCategory>? articles;
 
-  factory GeneralCategory.fromJson(Map<String, dynamic> json) =>
-      GeneralCategory(
+  factory Category.fromJson(Map<String, dynamic> json) => Category(
         status: json["status"],
         totalResults: json["totalResults"],
-        articles: List<Article>.from(
-            json["articles"].map((x) => Article.fromJson(x))),
+        articles: List<NewsCategory>.from(
+            json["articles"].map((x) => NewsCategory.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -36,8 +33,8 @@ class GeneralCategory {
       };
 }
 
-class Article {
-  Article({
+class NewsCategory {
+  NewsCategory({
     this.source,
     this.author,
     this.title,
@@ -57,15 +54,15 @@ class Article {
   DateTime? publishedAt;
   String? content;
 
-  factory Article.fromJson(Map<String, dynamic> json) => Article(
+  factory NewsCategory.fromJson(Map<String, dynamic> json) => NewsCategory(
         source: Source.fromJson(json["source"]),
         author: json["author"] == null ? null : json["author"],
         title: json["title"],
         description: json["description"],
         url: json["url"],
-        urlToImage: json["urlToImage"] == null ? null : json["urlToImage"],
+        urlToImage: json["urlToImage"],
         publishedAt: DateTime.parse(json["publishedAt"]),
-        content: json["content"],
+        content: json["content"] == null ? null : json["content"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -74,9 +71,9 @@ class Article {
         "title": title,
         "description": description,
         "url": url,
-        "urlToImage": urlToImage == null ? null : urlToImage,
+        "urlToImage": urlToImage,
         "publishedAt": publishedAt!.toIso8601String(),
-        "content": content,
+        "content": content == null ? null : content,
       };
 }
 

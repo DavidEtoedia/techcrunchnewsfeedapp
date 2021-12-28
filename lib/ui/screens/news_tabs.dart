@@ -1,7 +1,7 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
-import 'package:food_app/ui/widgets/health_tab.dart';
+import 'package:food_app/ui/widgets/business_tab.dart';
 import 'package:food_app/ui/widgets/news_display_screen.dart';
 import 'package:food_app/ui/widgets/sport_tab.dart';
 import 'package:food_app/ui/widgets/tech_tab.dart';
@@ -74,7 +74,7 @@ class SelectionTab extends HookConsumerWidget {
                     ),
                     Tab(
                       child: Text(
-                        'health',
+                        'Business',
                         style: TextStyle(
                             fontSize: 16.sp, fontWeight: FontWeight.w800),
                       ),
@@ -85,16 +85,15 @@ class SelectionTab extends HookConsumerWidget {
               SizedBox(height: 27.h),
               SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: 630.h,
+                height: 430.h,
                 // color: Colors.grey,
                 child: TabBarView(controller: _tabController, children: [
                   NewsList(),
                   TechTab(),
                   SportTab(),
-                  HealthTab()
-                  // AllView(),
-                  // InflowView(),
-                  // OutflowView(),
+                  BusinessTab()
+
+                  // TechTab(),
                 ]),
               ),
             ],

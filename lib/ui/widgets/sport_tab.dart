@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_app/core/services/api/Model/news_model.dart';
+import 'package:food_app/core/services/api/Model/news_category.dart';
 import 'package:food_app/ui/vm/sport_vm.dart';
 import 'package:food_app/ui/vm/tech_category.dart';
 import 'package:gap/gap.dart';
@@ -35,9 +36,11 @@ class SportTab extends HookConsumerWidget {
             return ref.refresh(sportProvider);
           },
           child: ListView.builder(
-              itemCount: value!.data.length,
+              physics: AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics()),
+              itemCount: value!.articles!.length,
               itemBuilder: (context, index) {
-                final tech = value.data[index];
+                final tech = value.articles![index];
                 return SportTabBuild(article: tech);
               }),
         );
@@ -47,7 +50,7 @@ class SportTab extends HookConsumerWidget {
 }
 
 class SportTabBuild extends HookConsumerWidget {
-  final Datum article;
+  final NewsCategory article;
   const SportTabBuild({Key? key, required this.article}) : super(key: key);
 
   @override
@@ -90,27 +93,27 @@ class SportTabBuild extends HookConsumerWidget {
     String sourceName() {
       // var timeNow = DateTime.now().hour;
 
-      if (article.source == 'Essentially Sports') {
-        return 'E Sport';
+      if (article.source!.name == 'NBCSports.com') {
+        return 'NBC Sports';
       }
 
-      if (article.source == "The Independent - Sports") {
-        return 'Independent';
+      if (article.source!.name == "Prideofdetroit.com") {
+        return 'Prideofdetroit';
       }
-      if (article.source == "Sportstar Live") {
-        return 'Sportstar';
+      if (article.source!.name == "Behind the Steel Curtain") {
+        return 'BSC';
       }
-      if (article.source == "FOX News - Sports") {
+      if (article.source!.name == "FOX News - Sports") {
         return 'FOX Sport';
       } else {
-        return article.source;
+        return article.source!.name.toString();
       }
     }
 
     final newText = article.title;
     final maxline = 5;
     //     var dateTimer = DateTime.now();
-    DateTime pubDate = article.publishedAt;
+    DateTime pubDate = article.publishedAt!;
     String formatted = DateFormat('h').format(pubDate);
 
     return Padding(
@@ -126,7 +129,7 @@ class SportTabBuild extends HookConsumerWidget {
           // padding: EdgeInsets.only(left: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            // crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
                 child: CachedNetworkImage(
@@ -138,64 +141,102 @@ class SportTabBuild extends HookConsumerWidget {
                           height: 20,
                         ),
                     placeholder: (context, url) => CircularProgressIndicator(),
-                    imageUrl: article.image),
+                    imageUrl: article.urlToImage.toString()),
               ),
               Gap(20),
-              Column(
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                      width: 170,
-                      margin: EdgeInsets.only(
-                        top: 25.h,
-                      ),
-                      child: newText.length > maxline
-                          ? Text(
-                              article.title,
-                              maxLines: 4,
-                              overflow: TextOverflow.visible,
-                              style: TextStyle(
-                                  fontSize: 15.sp, fontWeight: FontWeight.w400),
-                            )
-                          : Text(
-                              article.title,
-                              maxLines: 4,
-                              overflow: TextOverflow.visible,
-                              style: TextStyle(
-                                  fontSize: 15.sp, fontWeight: FontWeight.w400),
-                            )),
-                  Gap(10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Image.asset(
-                        sourceDisplay(),
-                        width: 15,
-                        height: 15,
-                      ),
-                      Gap(6),
-                      Text(
-                        sourceName(),
-                        style: TextStyle(
-                            fontSize: 13.sp, fontWeight: FontWeight.w400),
-                      ),
-                      Gap(15),
-                      Container(
-                        // color: Colors.red,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              '${formatted} hour ago',
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        width: 170,
+                        margin: EdgeInsets.only(
+                          top: 25.h,
+                        ),
+                        child: newText!.length > maxline
+                            ? Text(
+                                article.title.toString(),
+                                maxLines: 4,
+                                overflow: TextOverflow.visible,
+                                style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400),
+                              )
+                            : Text(
+                                article.title.toString(),
+                                maxLines: 4,
+                                overflow: TextOverflow.visible,
+                                style: TextStyle(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w400),
+                              )),
+                    Gap(10),
+                    Container(
+                      margin: EdgeInsets.only(right: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Image.asset(
+                            sourceDisplay(),
+                            width: 15,
+                            height: 15,
+                          ),
+                          Gap(10),
+                          Container(
+                            width: 100,
+                            child: Text(
+                              sourceName(),
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontSize: 13.sp, fontWeight: FontWeight.w400),
                             ),
-                          ],
-                        ),
+                          ),
+                          Spacer(),
+                          Text(
+                            '${formatted} hour ago',
+                            style: TextStyle(
+                                fontSize: 13.sp, fontWeight: FontWeight.w400),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ],
+                    )
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.start,
+                    //   children: [
+                    //     Image.asset(
+                    //       sourceDisplay(),
+                    //       width: 15,
+                    //       height: 15,
+                    //     ),
+                    //     Gap(6),
+                    //     Text(
+                    //       sourceName(),
+                    //       style: TextStyle(
+                    //           fontSize: 13.sp, fontWeight: FontWeight.w400),
+                    //     ),
+                    //     Gap(15),
+                    //     Text(
+                    //       '${formatted} hour ago',
+                    //       style: TextStyle(
+                    //           fontSize: 13.sp, fontWeight: FontWeight.w400),
+                    //     ),
+                    //     // Container(
+                    //     //   // color: Colors.red,
+                    //     //   child: Row(
+                    //     //     mainAxisAlignment: MainAxisAlignment.end,
+                    //     //     children: [
+                    //     //       Text(
+                    //     //         '${formatted} hour ago',
+                    //     //         style: TextStyle(
+                    //     //             fontSize: 13.sp, fontWeight: FontWeight.w400),
+                    //     //       ),
+                    //     //     ],
+                    //     //   ),
+                    //     // ),
+                    //   ],
+                    // ),
+                  ],
+                ),
               ),
             ],
           ),

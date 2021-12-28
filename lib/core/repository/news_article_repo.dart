@@ -1,5 +1,7 @@
 import 'package:food_app/core/repository/I_news_repo.dart';
+import 'package:food_app/core/services/api/Model/live_feed.dart';
 import 'package:food_app/core/services/api/Model/news_model.dart';
+import 'package:food_app/core/services/api/Model/news_category.dart';
 import 'package:food_app/core/services/api/news_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -13,26 +15,38 @@ class NewsRepository extends INewsRepository {
   NewsRepository(this._newsService);
 
   @override
-  Future<NewArticle> getNews() async {
+  Future<GeneralCategory> getNews() async {
     final newsRes = await _newsService.getNews();
     return newsRes;
   }
 
   @override
-  Future<NewArticle> techCategory() async {
+  Future<Category> techCategory() async {
     final techNews = await _newsService.techCategory();
     return techNews;
   }
 
   @override
-  Future<NewArticle> sportCategory() async {
+  Future<Category> sportCategory() async {
     final sportNews = await _newsService.sportCategory();
     return sportNews;
   }
 
   @override
-  Future<NewArticle> healthCategory() async {
-    final healthNews = await _newsService.healthCategory();
+  Future<Category> businessCategory() async {
+    final healthNews = await _newsService.businessCategory();
     return healthNews;
   }
+
+  @override
+  Future<LiveFeed> newsFeed() async {
+    final liveFeed = await _newsService.newsFeed();
+    return liveFeed;
+  }
+
+  // @override
+  // Future<NewArticle> newsFeed() async {
+  //   final newsFeed = await _newsService.newsFeed();
+  //   return newsFeed;
+  // }
 }
