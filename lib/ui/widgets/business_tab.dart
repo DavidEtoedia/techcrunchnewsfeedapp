@@ -8,6 +8,9 @@ import 'package:food_app/ui/vm/health_vm.dart';
 import 'package:food_app/ui/vm/sport_vm.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
+
+import 'component/loading.dart';
 
 class BusinessTab extends HookConsumerWidget {
   const BusinessTab({Key? key}) : super(key: key);
@@ -27,7 +30,10 @@ class BusinessTab extends HookConsumerWidget {
         );
       },
       error: (Object error, StackTrace stackTrace) {
-        return Text(error.toString());
+        return Center(
+            child: Container(
+                margin: EdgeInsets.only(left: 35, right: 35),
+                child: Text(error.toString())));
       },
       success: (value) {
         return RefreshIndicator(
@@ -57,6 +63,8 @@ class BusinessTabBuild extends HookConsumerWidget {
     final image = useState('assets/images/techcrunch.png');
     final cnnImage = useState('assets/images/ccn.png');
     final bbcImage = useState('assets/images/bbcNew.png');
+    DateTime pubDate = article.publishedAt!;
+    String formatted = DateFormat('h').format(pubDate);
     final newText = article.title;
     final maxline = 5;
     String sourceDisplay() {
@@ -76,6 +84,26 @@ class BusinessTabBuild extends HookConsumerWidget {
         return bbcImage.value;
       } else {
         return bbcImage.value;
+      }
+    }
+
+    String sourceName() {
+      // var timeNow = DateTime.now().hour;
+
+      if (article.source!.name == 'NBCSports.com') {
+        return 'NBC Sports';
+      }
+
+      if (article.source!.name == "Prideofdetroit.com") {
+        return 'Prideofdetroit';
+      }
+      if (article.source!.name == "Behind the Steel Curtain") {
+        return 'BSC';
+      }
+      if (article.source!.name == "FOX News - Sports") {
+        return 'FOX Sport';
+      } else {
+        return article.source!.name.toString();
       }
     }
 
@@ -103,49 +131,72 @@ class BusinessTabBuild extends HookConsumerWidget {
                           width: 20,
                           height: 20,
                         ),
-                    placeholder: (context, url) => CircularProgressIndicator(),
+                    placeholder: (context, url) => Loading(),
                     imageUrl: article.urlToImage.toString()),
               ),
               Gap(20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 170,
-                    margin: EdgeInsets.only(
-                      top: 25.h,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 170,
+                      margin: EdgeInsets.only(
+                        top: 25.h,
+                      ),
+                      child: newText!.length > maxline
+                          ? Text(
+                              article.title.toString(),
+                              maxLines: 4,
+                              style: TextStyle(
+                                  height: 1.2,
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.w400),
+                            )
+                          : Text(
+                              article.title.toString(),
+                              maxLines: 4,
+                              style: TextStyle(
+                                  height: 1.2,
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.w400),
+                            ),
                     ),
-                    child: newText!.length > maxline
-                        ? Text(
-                            article.title.toString(),
-                            maxLines: 4,
-                            style: TextStyle(
-                                fontSize: 15.sp, fontWeight: FontWeight.w400),
-                          )
-                        : Text(
-                            article.title.toString(),
-                            maxLines: 4,
-                            style: TextStyle(
-                                fontSize: 15.sp, fontWeight: FontWeight.w400),
+                    Gap(10),
+                    Container(
+                      margin: EdgeInsets.only(right: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Image.asset(
+                            sourceDisplay(),
+                            width: 15,
+                            height: 15,
                           ),
-                  ),
-                  Gap(10),
-                  Row(
-                    children: [
-                      Image.asset(
-                        sourceDisplay(),
-                        width: 15,
-                        height: 15,
+                          Gap(10),
+                          Expanded(
+                            child: Container(
+                              width: 100,
+                              child: Text(
+                                sourceName(),
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          ),
+                          Spacer(),
+                          Text(
+                            '${formatted} hour ago',
+                            style: TextStyle(
+                                fontSize: 13.sp, fontWeight: FontWeight.w400),
+                          ),
+                        ],
                       ),
-                      Gap(6),
-                      Text(
-                        article.source!.name.toString(),
-                        style: TextStyle(
-                            fontSize: 15.sp, fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
-                ],
+                    )
+                  ],
+                ),
               ),
             ],
           ),

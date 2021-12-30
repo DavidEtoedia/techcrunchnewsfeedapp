@@ -82,10 +82,10 @@ class SelectionTab extends HookConsumerWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 27.h),
+              SizedBox(height: 15.h),
               SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: 430.h,
+                height: 400.h,
                 // color: Colors.grey,
                 child: TabBarView(controller: _tabController, children: [
                   NewsList(),
