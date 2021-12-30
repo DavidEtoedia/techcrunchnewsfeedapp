@@ -21,14 +21,13 @@ final dioProvider = Provider((ref) => Dio(BaseOptions(
 class NewsService {
   final Dio dio;
   NewsService(this.dio) {
-    dio.interceptors.add(ApiInterceptor());
     dio.interceptors.add(ErrorInterceptor());
     dio.interceptors.add(PrettyDioLogger());
   }
 
   Future<GeneralCategory> getNews() async {
     final url =
-        'top-headlines?country=us&category=general&apiKey=4afd7897032e43419f559a8308a7d094';
+        'top-headlines?country=us&category=general&apiKey=${Constant.apiKey}';
     try {
       final response = await dio.get(
         url,
@@ -37,8 +36,8 @@ class NewsService {
       return result;
     } on DioError catch (e) {
       if (e.response != null && e.response!.data != '') {
-        Failure result = Failure.fromJson(e.response!.data);
-        throw result.error!.message!;
+        ErrorData result = ErrorData.fromJson(e.response!.data);
+        throw result.message!;
       } else {
         throw e.error;
       }
@@ -66,7 +65,7 @@ class NewsService {
 
   Future<Category> sportCategory() async {
     final url =
-        'top-headlines?country=us&category=sports&apiKey=4afd7897032e43419f559a8308a7d094';
+        'top-headlines?country=us&category=sports&apiKey=${Constant.apiKey}';
     try {
       final response = await dio.get(
         url,
@@ -75,8 +74,8 @@ class NewsService {
       return result;
     } on DioError catch (e) {
       if (e.response != null && e.response!.data != '') {
-        Failure result = Failure.fromJson(e.response!.data);
-        throw result.error!.message!;
+        ErrorData result = ErrorData.fromJson(e.response!.data);
+        throw result.message!;
       } else {
         throw e.error;
       }
@@ -85,7 +84,7 @@ class NewsService {
 
   Future<Category> techCategory() async {
     final url =
-        'top-headlines?country=us&category=technology&apiKey=4afd7897032e43419f559a8308a7d094';
+        'top-headlines?country=us&category=technology&apiKey=${Constant.apiKey}';
     try {
       final response = await dio.get(
         url,
@@ -94,8 +93,8 @@ class NewsService {
       return result;
     } on DioError catch (e) {
       if (e.response != null && e.response!.data != '') {
-        Failure result = Failure.fromJson(e.response!.data);
-        throw result.error!.message!;
+        ErrorData result = ErrorData.fromJson(e.response!.data);
+        throw result.message!;
       } else {
         throw e.error;
       }
@@ -104,7 +103,7 @@ class NewsService {
 
   Future<Category> businessCategory() async {
     final url =
-        'top-headlines?country=us&category=business&apiKey=4afd7897032e43419f559a8308a7d094';
+        'top-headlines?country=us&category=business&apiKey=${Constant.apiKey}';
     try {
       final response = await dio.get(
         url,
@@ -113,8 +112,8 @@ class NewsService {
       return result;
     } on DioError catch (e) {
       if (e.response != null && e.response!.data != '') {
-        Failure result = Failure.fromJson(e.response!.data);
-        throw result.error!.message!;
+        ErrorData result = ErrorData.fromJson(e.response!.data);
+        throw result.message!;
       } else {
         throw e.error;
       }
@@ -123,7 +122,7 @@ class NewsService {
 
   Future<LiveFeed> newsFeed() async {
     final url =
-        'top-headlines?sources=bbc-news,techcrunch,techradar&apiKey=4afd7897032e43419f559a8308a7d094';
+        'top-headlines?sources=bbc-news,techcrunch,techradar&apiKey=${Constant.apiKey}';
     try {
       final response = await dio.get(
         url,
@@ -132,8 +131,9 @@ class NewsService {
       return result;
     } on DioError catch (e) {
       if (e.response != null && e.response!.data != '') {
-        Failure result = Failure.fromJson(e.response!.data);
-        throw result.error!.message!;
+        ErrorData result = ErrorData.fromJson(e.response!.data);
+        print(result.message);
+        throw result.message!;
       } else {
         throw e.error;
       }

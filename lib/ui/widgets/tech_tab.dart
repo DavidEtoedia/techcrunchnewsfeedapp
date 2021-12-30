@@ -9,6 +9,8 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import 'component/loading.dart';
+
 class TechTab extends HookConsumerWidget {
   const TechTab({Key? key}) : super(key: key);
 
@@ -27,7 +29,10 @@ class TechTab extends HookConsumerWidget {
         );
       },
       error: (Object error, StackTrace stackTrace) {
-        return Text(error.toString());
+        return Center(
+            child: Container(
+                margin: EdgeInsets.only(left: 35, right: 35),
+                child: Text(error.toString())));
       },
       success: (value) {
         return RefreshIndicator(
@@ -110,7 +115,7 @@ class TechTabBuild extends HookConsumerWidget {
                           width: 20,
                           height: 20,
                         ),
-                    placeholder: (context, url) => CircularProgressIndicator(),
+                    placeholder: (context, url) => Loading(),
                     imageUrl: article.urlToImage.toString()),
               ),
               Gap(20),
@@ -128,13 +133,17 @@ class TechTabBuild extends HookConsumerWidget {
                               article.title.toString(),
                               maxLines: 4,
                               style: TextStyle(
-                                  fontSize: 15.sp, fontWeight: FontWeight.w400),
+                                  height: 1.2,
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.w400),
                             )
                           : Text(
                               article.title.toString(),
                               maxLines: 4,
                               style: TextStyle(
-                                  fontSize: 15.sp, fontWeight: FontWeight.w400),
+                                  height: 1.2,
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.w400),
                             ),
                     ),
                     Gap(10),
@@ -149,13 +158,16 @@ class TechTabBuild extends HookConsumerWidget {
                             height: 15,
                           ),
                           Gap(10),
-                          Container(
-                            width: 100,
-                            child: Text(
-                              article.source!.name.toString(),
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 13.sp, fontWeight: FontWeight.w400),
+                          Expanded(
+                            child: Container(
+                              width: 100,
+                              child: Text(
+                                article.source!.name.toString(),
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.w400),
+                              ),
                             ),
                           ),
                           Spacer(),

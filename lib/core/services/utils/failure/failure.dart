@@ -1,65 +1,33 @@
 // To parse this JSON data, do
 //
-//     final failure = failureFromJson(jsonString);
+//     final errorData = errorDataFromJson(jsonString);
 
 import 'dart:convert';
 
-Failure failureFromJson(String str) => Failure.fromJson(json.decode(str));
+ErrorData errorDataFromJson(String str) => ErrorData.fromJson(json.decode(str));
 
-String failureToJson(Failure data) => json.encode(data.toJson());
+String errorDataToJson(ErrorData data) => json.encode(data.toJson());
 
-class Failure {
-  Failure({
-    this.error,
-  });
-
-  Error? error;
-
-  factory Failure.fromJson(Map<String, dynamic> json) => Failure(
-        error: Error.fromJson(json["error"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "error": error!.toJson(),
-      };
-}
-
-class Error {
-  Error({
+class ErrorData {
+  ErrorData({
+    this.status,
     this.code,
     this.message,
-    this.context,
   });
 
+  String? status;
   String? code;
   String? message;
-  Context? context;
 
-  factory Error.fromJson(Map<String, dynamic> json) => Error(
+  factory ErrorData.fromJson(Map<String, dynamic> json) => ErrorData(
+        status: json["status"],
         code: json["code"],
         message: json["message"],
-        context: Context.fromJson(json["context"]),
       );
 
   Map<String, dynamic> toJson() => {
+        "status": status,
         "code": code,
         "message": message,
-        "context": context!.toJson(),
-      };
-}
-
-class Context {
-  Context({
-    this.date,
-  });
-
-  List<String>? date;
-
-  factory Context.fromJson(Map<String, dynamic> json) => Context(
-        date: List<String>.from(json["date"].map((x) => x)),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "date": List<dynamic>.from(date!.map((x) => x)),
       };
 }

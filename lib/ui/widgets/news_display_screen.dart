@@ -8,6 +8,8 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import 'component/loading.dart';
+
 class NewsList extends HookConsumerWidget {
   const NewsList({Key? key}) : super(key: key);
 
@@ -41,7 +43,10 @@ class NewsList extends HookConsumerWidget {
         ),
       );
     }, error: (Object error, StackTrace stackTrace) {
-      return Text(error.toString());
+      return Center(
+          child: Container(
+              margin: EdgeInsets.only(left: 35, right: 35),
+              child: Text(error.toString())));
     });
   }
 }
@@ -133,7 +138,7 @@ class NewsListBuild extends HookConsumerWidget {
                           width: 20,
                           height: 20,
                         ),
-                    placeholder: (context, url) => CircularProgressIndicator(),
+                    placeholder: (context, url) => Loading(),
                     imageUrl: article.urlToImage.toString()),
               ),
               Gap(20),
@@ -152,6 +157,7 @@ class NewsListBuild extends HookConsumerWidget {
                                 maxLines: 4,
                                 overflow: TextOverflow.visible,
                                 style: TextStyle(
+                                    height: 1.2,
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400),
                               )
@@ -175,13 +181,16 @@ class NewsListBuild extends HookConsumerWidget {
                             height: 15,
                           ),
                           Gap(10),
-                          Container(
-                            width: 100,
-                            child: Text(
-                              sourceName(),
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 13.sp, fontWeight: FontWeight.w400),
+                          Expanded(
+                            child: Container(
+                              width: 130,
+                              child: Text(
+                                sourceName(),
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.w400),
+                              ),
                             ),
                           ),
                           Spacer(),

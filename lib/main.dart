@@ -5,6 +5,7 @@ import 'package:food_app/Authentication/EmailAuth/emailAuth.dart';
 import 'package:food_app/homepage.dart';
 import 'package:food_app/ui/screens/Home_screen.dart';
 import 'package:food_app/ui/widgets/news_display_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'Authentication/EmailAuth/google_login_auth/googleAuth.dart';
@@ -28,8 +29,8 @@ class MyApp extends StatelessWidget {
         builder: () => MaterialApp(
               title: 'Flutter Demo',
               theme: ThemeData(
-                primarySwatch: Colors.blue,
-              ),
+                  primarySwatch: Colors.blue,
+                  textTheme: GoogleFonts.poppinsTextTheme()),
               home: HomeScreen(),
               debugShowCheckedModeBanner: false,
             ));
