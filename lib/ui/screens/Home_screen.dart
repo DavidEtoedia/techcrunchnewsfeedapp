@@ -26,7 +26,7 @@ class HomeScreen extends StatelessWidget {
             margin: EdgeInsets.only(left: 20.w),
             child: Text(
               'Explore today\'s\nworld news',
-              style: TextStyle(fontSize: 30.sp, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.w600),
             ),
           ),
           SizedBox(
