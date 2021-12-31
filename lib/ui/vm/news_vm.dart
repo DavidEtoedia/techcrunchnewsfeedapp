@@ -14,5 +14,6 @@ class NewsArticleVM extends RequestStateNotifier<GeneralCategory> {
   NewsArticleVM(ref) : _newsRepository = ref.read(newsProvider) {
     getNews();
   }
-  void getNews() => makeRequest(() => _newsRepository.getNews());
+  void getNews([String country = "us"]) =>
+      makeRequest(() => _newsRepository.getNews(country));
 }

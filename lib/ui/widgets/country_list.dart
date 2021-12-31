@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_app/core/services/api/Model/country_model.dart';
 import 'package:food_app/ui/vm/health_vm.dart';
+import 'package:food_app/ui/vm/news_vm.dart';
+import 'package:food_app/ui/vm/sport_vm.dart';
+import 'package:food_app/ui/vm/tech_category.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class CountryList extends HookConsumerWidget {
@@ -32,6 +35,11 @@ class CountryList extends HookConsumerWidget {
                 toggle.state = value!;
 
                 ref.read(healthProvider.notifier).healthTab(list.countryId!);
+                ref
+                    .read(allNewsArticleProvider.notifier)
+                    .getNews(list.countryId!);
+                ref.read(techProvider.notifier).techTab(list.countryId!);
+                ref.read(sportProvider.notifier).sportTab(list.countryId!);
               },
               toggleable: true,
               controlAffinity: ListTileControlAffinity.trailing,

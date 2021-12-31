@@ -12,12 +12,19 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'component/loading.dart';
 
-class TechTab extends HookConsumerWidget {
+class TechTab extends ConsumerStatefulWidget {
   const TechTab({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  TechTabState createState() => TechTabState();
+}
+
+class TechTabState extends ConsumerState<TechTab>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
     final vm = ref.watch(techProvider);
+
     return vm.when(
       idle: () {
         return Center(
@@ -52,7 +59,53 @@ class TechTab extends HookConsumerWidget {
       },
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
+
+// class TechTab extends HookConsumerWidget {
+//   const TechTab({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final vm = ref.watch(techProvider);
+//     return vm.when(
+//       idle: () {
+//         return Center(
+//           child: CircularProgressIndicator(),
+//         );
+//       },
+//       loading: () {
+//         return Center(
+//           child: CircularProgressIndicator(),
+//         );
+//       },
+//       error: (Object error, StackTrace stackTrace) {
+//         return Center(
+//             child: Container(
+//                 margin: EdgeInsets.only(left: 35, right: 35),
+//                 child: Text(error.toString())));
+//       },
+//       success: (value) {
+//         return RefreshIndicator(
+//           onRefresh: () async {
+//             return ref.refresh(techProvider);
+//           },
+//           child: ListView.builder(
+//               physics: AlwaysScrollableScrollPhysics(
+//                   parent: BouncingScrollPhysics()),
+//               itemCount: value!.articles!.length,
+//               itemBuilder: (context, index) {
+//                 final tech = value.articles![index];
+//                 return TechTabBuild(article: tech);
+//               }),
+//         );
+//       },
+//     );
+//   }
+// }
 
 class TechTabBuild extends HookConsumerWidget {
   final NewsCategory article;

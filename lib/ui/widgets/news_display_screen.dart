@@ -10,11 +10,17 @@ import 'package:intl/intl.dart';
 
 import 'component/loading.dart';
 
-class NewsList extends HookConsumerWidget {
+class NewsList extends ConsumerStatefulWidget {
   const NewsList({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  NewsListState createState() => NewsListState();
+}
+
+class NewsListState extends ConsumerState<NewsList>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
     final vm = ref.watch(allNewsArticleProvider);
 
     return vm.when(idle: () {
@@ -49,7 +55,52 @@ class NewsList extends HookConsumerWidget {
               child: Text(error.toString())));
     });
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
+
+// class NewsList extends HookConsumerWidget {
+//   const NewsList({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final vm = ref.watch(allNewsArticleProvider);
+
+//     return vm.when(idle: () {
+//       return Center(
+//         child: CircularProgressIndicator(),
+//       );
+//     }, loading: () {
+//       return Center(
+//         child: CircularProgressIndicator(),
+//       );
+//     }, success: (data) {
+//       return SizedBox(
+//         height: 200.h,
+//         child: RefreshIndicator(
+//           onRefresh: () async {
+//             return ref.refresh(allNewsArticleProvider);
+//           },
+//           child: ListView.builder(
+//               physics: AlwaysScrollableScrollPhysics(
+//                   parent: BouncingScrollPhysics()),
+//               itemCount: data!.articles!.length,
+//               itemBuilder: (context, index) {
+//                 final news = data.articles![index];
+//                 return NewsListBuild(article: news);
+//               }),
+//         ),
+//       );
+//     }, error: (Object error, StackTrace stackTrace) {
+//       return Center(
+//           child: Container(
+//               margin: EdgeInsets.only(left: 35, right: 35),
+//               child: Text(error.toString())));
+//     });
+//   }
+// }
 
 class NewsListBuild extends HookConsumerWidget {
   final Article article;

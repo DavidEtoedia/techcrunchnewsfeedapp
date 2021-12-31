@@ -27,9 +27,9 @@ class NewsService {
     dio.interceptors.add(PrettyDioLogger());
   }
 
-  Future<GeneralCategory> getNews() async {
+  Future<GeneralCategory> getNews(String country) async {
     final url =
-        'top-headlines?country=us&category=general&apiKey=${Constant.apiKey}';
+        'top-headlines?country=$country&category=general&apiKey=${Constant.apiKey}';
     try {
       final response = await dio.get(
         url,
@@ -46,28 +46,9 @@ class NewsService {
     }
   }
 
-  // Future<NewArticle> techCategory() async {
-  //   final url =
-  //       'news?access_key=59c279f8f930e95543e11924d03039a6&categories=technology&languages=en';
-  //   try {
-  //     final response = await dio.get(
-  //       url,
-  //     );
-  //     final result = NewArticle.fromJson(response.data);
-  //     return result;
-  //   } on DioError catch (e) {
-  //     if (e.response != null && e.response!.data != '') {
-  //       Failure result = Failure.fromJson(e.response!.data);
-  //       throw result.error!.message!;
-  //     } else {
-  //       throw e.error;
-  //     }
-  //   }
-  // }
-
-  Future<Category> sportCategory() async {
+  Future<Category> sportCategory(String country) async {
     final url =
-        'top-headlines?country=us&category=sports&apiKey=${Constant.apiKey}';
+        'top-headlines?country=$country&category=sports&apiKey=${Constant.apiKey}';
     try {
       final response = await dio.get(
         url,
@@ -84,9 +65,9 @@ class NewsService {
     }
   }
 
-  Future<Category> techCategory() async {
+  Future<Category> techCategory(String country) async {
     final url =
-        'top-headlines?country=us&category=technology&apiKey=${Constant.apiKey}';
+        'top-headlines?country=$country&category=technology&apiKey=${Constant.apiKey}';
     try {
       final response = await dio.get(
         url,
