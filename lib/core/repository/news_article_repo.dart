@@ -33,14 +33,14 @@ class NewsRepository extends INewsRepository {
   }
 
   @override
-  Future<Category> businessCategory() async {
-    final healthNews = await _newsService.businessCategory();
+  Future<Category> businessCategory(String country) async {
+    final healthNews = await _newsService.businessCategory(country);
     return healthNews;
   }
 
   @override
   Future<LiveFeed> newsFeed() async {
-    final liveFeed = await _newsService.newsFeed();
+    final liveFeed = _newsService.newsFeed();
     return liveFeed;
   }
 

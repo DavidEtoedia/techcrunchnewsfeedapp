@@ -6,7 +6,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final techProvider =
     StateNotifierProvider.autoDispose<NewsArticleVM, RequestState<Category>>(
-  (ref) => NewsArticleVM(ref),
+  (ref) {
+    ref.maintainState = true;
+    return NewsArticleVM(ref);
+  },
 );
 
 class NewsArticleVM extends RequestStateNotifier<Category> {

@@ -8,6 +8,7 @@ import 'package:food_app/ui/vm/tech_category.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'component/loading.dart';
 
@@ -94,7 +95,13 @@ class TechTabBuild extends HookConsumerWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 10),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return Container();
+              });
+        },
         child: Container(
           height: 120,
           decoration: BoxDecoration(
@@ -115,7 +122,7 @@ class TechTabBuild extends HookConsumerWidget {
                           width: 20,
                           height: 20,
                         ),
-                    placeholder: (context, url) => Loading(),
+                    placeholder: (context, url) => LoadingProgress(),
                     imageUrl: article.urlToImage.toString()),
               ),
               Gap(20),

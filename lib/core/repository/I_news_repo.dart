@@ -7,5 +7,5 @@ abstract class INewsRepository {
   Future<LiveFeed> newsFeed();
   Future<Category> techCategory();
   Future<Category> sportCategory();
-  Future<Category> businessCategory();
+  Future<Category> businessCategory(String country);
 }

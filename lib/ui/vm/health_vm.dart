@@ -11,8 +11,8 @@ final healthProvider =
 class NewsArticleVM extends RequestStateNotifier<Category> {
   final NewsRepository _newsRepository;
 
-  NewsArticleVM(ref) : _newsRepository = ref.read(newsProvider) {
-    healthTab();
-  }
-  void healthTab() => makeRequest(() => _newsRepository.businessCategory());
+  NewsArticleVM(ref) : _newsRepository = ref.read(newsProvider);
+
+  void healthTab([String country = 'us']) =>
+      makeRequest(() => _newsRepository.businessCategory(country));
 }

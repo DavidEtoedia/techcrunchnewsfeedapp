@@ -138,7 +138,7 @@ class NewsListBuild extends HookConsumerWidget {
                           width: 20,
                           height: 20,
                         ),
-                    placeholder: (context, url) => Loading(),
+                    placeholder: (context, url) => LoadingProgress(),
                     imageUrl: article.urlToImage.toString()),
               ),
               Gap(20),
