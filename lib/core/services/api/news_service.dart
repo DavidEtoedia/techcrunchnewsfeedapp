@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:food_app/core/services/api/Model/live_feed.dart';
 import 'package:food_app/core/services/api/Model/news_model.dart';
@@ -101,9 +103,9 @@ class NewsService {
     }
   }
 
-  Future<Category> businessCategory() async {
+  Future<Category> businessCategory(String country) async {
     final url =
-        'top-headlines?country=us&category=business&apiKey=${Constant.apiKey}';
+        'top-headlines?country=$country&category=business&apiKey=${Constant.apiKey}';
     try {
       final response = await dio.get(
         url,
@@ -128,6 +130,7 @@ class NewsService {
         url,
       );
       final result = LiveFeed.fromJson(response.data);
+
       return result;
     } on DioError catch (e) {
       if (e.response != null && e.response!.data != '') {

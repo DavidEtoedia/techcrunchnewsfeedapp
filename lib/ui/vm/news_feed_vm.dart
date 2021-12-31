@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:food_app/core/controller/generic_state_notifier.dart';
 import 'package:food_app/core/repository/news_article_repo.dart';
 import 'package:food_app/core/services/api/Model/live_feed.dart';
@@ -15,5 +17,6 @@ class NewsFeedVM extends RequestStateNotifier<LiveFeed> {
   NewsFeedVM(ref) : _newsRepository = ref.read(newsProvider) {
     getNewsFeed();
   }
+
   void getNewsFeed() => makeRequest(() => _newsRepository.newsFeed());
 }

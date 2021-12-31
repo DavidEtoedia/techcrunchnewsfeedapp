@@ -1,6 +1,11 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:food_app/core/controller/generic_state_notifier.dart';
 import 'package:food_app/ui/vm/news_feed_vm.dart';
+import 'package:food_app/ui/widgets/component/loading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -10,15 +15,19 @@ class LiveNews extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vm = ref.watch(newsFeedProvider);
-    return vm.when(idle: () {
+
+    // useEffect(() {
+    //   Timer.periodic(Duration(minutes: 20), (timer) {
+    //     print('refreshing');
+    //     return ref.refresh(newsFeedProvider.notifier);
+    //   });
+    // });
+
+    return vm.when(loading: () {
       return Center(
         child: CircularProgressIndicator(),
       );
-    }, loading: () {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    }, error: (Object error, StackTrace stackTrace) {
+    }, error: (Object error, StackTrace? stackTrace) {
       return Center(
           child: Container(
               margin: EdgeInsets.only(left: 35, right: 35),
@@ -71,8 +80,7 @@ class LiveNews extends HookConsumerWidget {
                             width: 20,
                             height: 20,
                           ),
-                          placeholder: (context, url) =>
-                              CircularProgressIndicator(),
+                          placeholder: (context, url) => LoadingProgress(),
                           imageUrl: newsfeed.urlToImage.toString(),
                         ),
                       ),
@@ -106,6 +114,10 @@ class LiveNews extends HookConsumerWidget {
             );
           },
         ),
+      );
+    }, idle: () {
+      return Center(
+        child: CircularProgressIndicator(),
       );
     });
   }
