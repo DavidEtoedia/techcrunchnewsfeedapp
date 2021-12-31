@@ -12,12 +12,19 @@ import 'package:intl/intl.dart';
 
 import 'component/loading.dart';
 
-class SportTab extends HookConsumerWidget {
+class SportTab extends ConsumerStatefulWidget {
   const SportTab({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  SportTabState createState() => SportTabState();
+}
+
+class SportTabState extends ConsumerState<SportTab>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
     final vm = ref.watch(sportProvider);
+
     return vm.when(
       idle: () {
         return Center(
@@ -52,7 +59,53 @@ class SportTab extends HookConsumerWidget {
       },
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
+
+// class SportTab extends HookConsumerWidget {
+//   const SportTab({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final vm = ref.watch(sportProvider);
+//     return vm.when(
+//       idle: () {
+//         return Center(
+//           child: CircularProgressIndicator(),
+//         );
+//       },
+//       loading: () {
+//         return Center(
+//           child: CircularProgressIndicator(),
+//         );
+//       },
+//       error: (Object error, StackTrace stackTrace) {
+//         return Center(
+//             child: Container(
+//                 margin: EdgeInsets.only(left: 35, right: 35),
+//                 child: Text(error.toString())));
+//       },
+//       success: (value) {
+//         return RefreshIndicator(
+//           onRefresh: () async {
+//             return ref.refresh(sportProvider);
+//           },
+//           child: ListView.builder(
+//               physics: AlwaysScrollableScrollPhysics(
+//                   parent: BouncingScrollPhysics()),
+//               itemCount: value!.articles!.length,
+//               itemBuilder: (context, index) {
+//                 final tech = value.articles![index];
+//                 return SportTabBuild(article: tech);
+//               }),
+//         );
+//       },
+//     );
+//   }
+// }
 
 class SportTabBuild extends HookConsumerWidget {
   final NewsCategory article;

@@ -15,20 +15,20 @@ class NewsRepository extends INewsRepository {
   NewsRepository(this._newsService);
 
   @override
-  Future<GeneralCategory> getNews() async {
-    final newsRes = await _newsService.getNews();
+  Future<GeneralCategory> getNews(String country) async {
+    final newsRes = await _newsService.getNews(country);
     return newsRes;
   }
 
   @override
-  Future<Category> techCategory() async {
-    final techNews = await _newsService.techCategory();
+  Future<Category> techCategory(String country) async {
+    final techNews = await _newsService.techCategory(country);
     return techNews;
   }
 
   @override
-  Future<Category> sportCategory() async {
-    final sportNews = await _newsService.sportCategory();
+  Future<Category> sportCategory(String country) async {
+    final sportNews = await _newsService.sportCategory(country);
     return sportNews;
   }
 

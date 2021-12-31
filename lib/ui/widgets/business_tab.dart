@@ -4,7 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_app/core/controller/generic_state_notifier.dart';
 import 'package:food_app/core/services/api/Model/news_category.dart';
-import 'package:food_app/core/services/api/Model/news_model.dart';
 import 'package:food_app/ui/vm/health_vm.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,25 +11,18 @@ import 'package:intl/intl.dart';
 
 import 'component/loading.dart';
 
-class BusinessTab extends HookConsumerWidget {
+class BusinessTab extends ConsumerStatefulWidget {
   const BusinessTab({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  BusinessTabState createState() => BusinessTabState();
+}
+
+class BusinessTabState extends ConsumerState<BusinessTab>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
     final vm = ref.watch(healthProvider);
-
-    // useEffect(() {
-    //   Stream.periodic(Duration(seconds: 100)).asyncMap((event) {
-    //     ref.watch(healthProvider.notifier).healthTab();
-    //     print('new content is available from here');
-    //   });
-    // });
-
-    ref.listen<RequestState>(healthProvider, (T, value) {
-      if (value is Success) {
-        return print('new content is available');
-      }
-    });
 
     return vm.when(
       idle: () {
@@ -66,7 +58,66 @@ class BusinessTab extends HookConsumerWidget {
       },
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
+// class BusinessTab extends HookConsumerWidget {
+//   const BusinessTab({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final vm = ref.watch(healthProvider);
+
+//     // useEffect(() {
+//     //   Stream.periodic(Duration(seconds: 100)).asyncMap((event) {
+//     //     ref.watch(healthProvider.notifier).healthTab();
+//     //     print('new content is available from here');
+//     //   });
+//     // });
+
+//     ref.listen<RequestState>(healthProvider, (T, value) {
+//       if (value is Success) {
+//         return print('new content is available');
+//       }
+//     });
+
+//     return vm.when(
+//       idle: () {
+//         return Center(
+//           child: CircularProgressIndicator(),
+//         );
+//       },
+//       loading: () {
+//         return Center(
+//           child: CircularProgressIndicator(),
+//         );
+//       },
+//       error: (Object error, StackTrace stackTrace) {
+//         return Center(
+//             child: Container(
+//                 margin: EdgeInsets.only(left: 35, right: 35),
+//                 child: Text(error.toString())));
+//       },
+//       success: (value) {
+//         return RefreshIndicator(
+//           onRefresh: () async {
+//             return ref.refresh(healthProvider);
+//           },
+//           child: ListView.builder(
+//               physics: AlwaysScrollableScrollPhysics(
+//                   parent: BouncingScrollPhysics()),
+//               itemCount: value!.articles!.length,
+//               itemBuilder: (context, index) {
+//                 final health = value.articles![index];
+//                 return BusinessTabBuild(article: health);
+//               }),
+//         );
+//       },
+//     );
+//   }
+// }
 
 class BusinessTabBuild extends HookConsumerWidget {
   final NewsCategory article;

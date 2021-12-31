@@ -60,21 +60,21 @@ class SelectionTab extends HookConsumerWidget {
                     ),
                     Tab(
                       child: Text(
-                        'Tech News',
+                        'Technology',
                         style: TextStyle(
                             fontSize: 16.sp, fontWeight: FontWeight.w800),
                       ),
                     ),
                     Tab(
                       child: Text(
-                        'Sports',
+                        'Sport',
                         style: TextStyle(
                             fontSize: 16.sp, fontWeight: FontWeight.w800),
                       ),
                     ),
                     Tab(
                       child: Text(
-                        'Business',
+                        'Finance',
                         style: TextStyle(
                             fontSize: 16.sp, fontWeight: FontWeight.w800),
                       ),

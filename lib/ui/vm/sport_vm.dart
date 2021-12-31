@@ -14,5 +14,6 @@ class NewsArticleVM extends RequestStateNotifier<Category> {
   NewsArticleVM(ref) : _newsRepository = ref.read(newsProvider) {
     sportTab();
   }
-  void sportTab() => makeRequest(() => _newsRepository.sportCategory());
+  void sportTab([String country = "us"]) =>
+      makeRequest(() => _newsRepository.sportCategory(country));
 }
